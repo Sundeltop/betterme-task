@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class StoreInventoryTest extends BaseTest {
 
     @Test(description = "Verify GET request to '/store/inventory' returns a map of status codes to quantities")
-    void verifyGetStoreInventoryReturnsMapOfStatusCodes() {
+    void verifyReturnMapOfInventoryStatusCodes() {
         final String[] defaultStatuses = new String[]{"available", "pending", "sold"};
         final RestAssuredResponse<Map<String, Integer>> storeInventory = api.petStoreService().getStoreInventory();
 

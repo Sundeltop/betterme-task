@@ -1,16 +1,20 @@
 package org.example.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 
 import java.time.OffsetDateTime;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 @Builder
-public record Order(@JsonProperty("id") long id,
-                    @JsonProperty("petId") long petId,
-                    @JsonProperty("quantity") int quantity,
+@JsonInclude(NON_NULL)
+public record Order(@JsonProperty("id") Long id,
+                    @JsonProperty("petId") Long petId,
+                    @JsonProperty("quantity") Integer quantity,
                     @JsonProperty("shipDate") @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX") OffsetDateTime shipDate,
                     @JsonProperty("status") String status,
-                    @JsonProperty("complete") boolean isCompleted) {
+                    @JsonProperty("complete") Boolean isCompleted) {
 }
