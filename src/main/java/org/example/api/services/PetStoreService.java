@@ -1,6 +1,7 @@
 package org.example.api.services;
 
 import lombok.extern.log4j.Log4j2;
+import org.example.api.dto.Order;
 
 import java.util.Map;
 
@@ -16,7 +17,7 @@ public class PetStoreService extends BasePetService {
 
     @SuppressWarnings("unchecked")
     public Map<String, Integer> getStoreInventory() {
-        log.info("Send GET request to /store/inventory");
+        log.info("Send GET request to '/store/inventory'");
         return given(requestSpecification)
                 .when()
                 .get("/inventory")
@@ -24,6 +25,18 @@ public class PetStoreService extends BasePetService {
                 .statusCode(SC_OK)
                 .extract()
                 .as(Map.class);
+    }
+
+    public Order createOrder(Order order) {
+        log.info("Send POST request to '/store/order' to create order");
+        return given(requestSpecification)
+                .when()
+                .body(order)
+                .post("/order")
+                .then()
+                .statusCode(SC_OK)
+                .extract()
+                .as(Order.class);
     }
 
     @Override
