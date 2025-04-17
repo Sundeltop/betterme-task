@@ -2,7 +2,7 @@ package org.example.api;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import org.example.api.service.PetStoreService;
+import org.example.api.services.PetStoreService;
 
 @Getter
 @Accessors(fluent = true)

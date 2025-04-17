@@ -1,4 +1,4 @@
-package org.example.api.service;
+package org.example.api.services;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
