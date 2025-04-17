@@ -6,11 +6,11 @@ import org.example.api.services.PetStoreService;
 
 @Getter
 @Accessors(fluent = true)
-public class RestWrapper {
+public class RestAssuredWrapper {
 
     private final PetStoreService petStoreService;
 
-    public RestWrapper() {
+    public RestAssuredWrapper() {
         petStoreService = new PetStoreService();
     }
 }

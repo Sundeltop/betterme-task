@@ -1,12 +1,12 @@
 package org.example.api.services;
 
 import lombok.extern.log4j.Log4j2;
+import org.example.api.RestAssuredResponse;
 import org.example.api.dto.Order;
 
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static org.apache.http.HttpStatus.SC_OK;
 
 @Log4j2
 public class PetStoreService extends BasePetService {
@@ -16,27 +16,20 @@ public class PetStoreService extends BasePetService {
     }
 
     @SuppressWarnings("unchecked")
-    public Map<String, Integer> getStoreInventory() {
+    public RestAssuredResponse<Map<String, Integer>> getStoreInventory() {
         log.info("Send GET request to '/store/inventory'");
-        return given(requestSpecification)
-                .when()
-                .get("/inventory")
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(Map.class);
+        return new RestAssuredResponse<Map<String, Integer>>(
+                given().spec(requestSpecification).get("/inventory"),
+                r -> r.as(Map.class)
+        );
     }
 
-    public Order createOrder(Order order) {
+    public RestAssuredResponse<Order> createOrder(Order order) {
         log.info("Send POST request to '/store/order' to create order");
-        return given(requestSpecification)
-                .when()
-                .body(order)
-                .post("/order")
-                .then()
-                .statusCode(SC_OK)
-                .extract()
-                .as(Order.class);
+        return new RestAssuredResponse<>(
+                given().spec(requestSpecification).body(order).post("/order"),
+                r -> r.as(Order.class)
+        );
     }
 
     @Override
