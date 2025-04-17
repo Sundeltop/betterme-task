@@ -10,7 +10,7 @@ import static org.aeonbits.owner.Config.Sources;
 @Sources({"system:properties", "classpath:config.properties"})
 public interface Configuration extends Config {
 
-    @Key("base.url")
-    @DefaultValue("http://localhost/v2/store/inventory")
-    String baseUrl();
+    @Key("base.uri")
+    @DefaultValue("http://localhost/v2")
+    String baseUri();
 }
