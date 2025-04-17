@@ -1,5 +1,6 @@
 package org.example.api.services;
 
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 
@@ -12,6 +13,7 @@ public abstract class BasePetService {
 
     public BasePetService() {
         requestSpecification = new RequestSpecBuilder()
+                .addFilter(new AllureRestAssured())
                 .setContentType(JSON)
                 .setBaseUri(configuration().baseUri())
                 .setBasePath(pathToResource())
