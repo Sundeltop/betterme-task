@@ -50,10 +50,15 @@ public class PetStoreService extends BasePetService {
 
     @Step("Send DELETE request to '/store/order/{orderId}' to delete order by 'orderId'")
     public RestAssuredResponse<Void> deleteOrderById(Long orderId) {
+        return deleteOrderById(Void.class, orderId);
+    }
+
+    @Step("Send DELETE request to '/store/order/{orderId}' to delete order by 'orderId'")
+    public <T> RestAssuredResponse<T> deleteOrderById(Class<T> entity, Long orderId) {
         log.info("Send DELETE request to '/store/order/{}' to delete order by 'orderId'", orderId);
         return new RestAssuredResponse<>(
                 given().spec(requestSpecification).delete("/order/{orderId}", orderId),
-                null
+                entity == Void.class ? null : r -> r.as(entity)
         );
     }
 

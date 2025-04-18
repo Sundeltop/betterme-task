@@ -11,7 +11,8 @@ import static java.time.OffsetDateTime.now;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.example.api.dto.Error.orderNotFound;
+import static org.example.api.dto.Error.orderNotFoundError;
+import static org.example.api.dto.Error.orderNotFoundUnknown;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.is;
 
@@ -65,7 +66,7 @@ public class StoreOrderTest extends BaseTest {
 
         getOrderResponse.validate().statusCode(SC_NOT_FOUND);
 
-        assertThat(getOrderResponse.extract()).isEqualTo(orderNotFound());
+        assertThat(getOrderResponse.extract()).isEqualTo(orderNotFoundError());
     }
 
     @Test(description = "Verify DELETE request to '/store/order/{orderId}' deletes purchase order by ID")
@@ -84,10 +85,11 @@ public class StoreOrderTest extends BaseTest {
         final Long notExistingOrderId = faker.number().numberBetween(90000L, 99999L);
         deleteOrderWithId(notExistingOrderId);
 
-        api.petStoreService()
-                .deleteOrderById(notExistingOrderId)
-                .validate()
-                .statusCode(SC_NOT_FOUND);
+        final RestAssuredResponse<Error> deleteOrderResponse = api.petStoreService().deleteOrderById(Error.class, notExistingOrderId);
+
+        deleteOrderResponse.validate().statusCode(SC_NOT_FOUND);
+
+        assertThat(deleteOrderResponse.extract()).isEqualTo(orderNotFoundUnknown());
     }
 
     private void createOrderWithId(Long orderId) {
