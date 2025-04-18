@@ -7,8 +7,11 @@ import org.example.api.dto.Order;
 import org.testng.annotations.Test;
 
 import static java.time.OffsetDateTime.now;
+import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.is;
 
 @Feature("Store Order")
 public class StoreOrderTest extends BaseTest {
@@ -62,6 +65,17 @@ public class StoreOrderTest extends BaseTest {
                 .statusCode(SC_OK);
     }
 
+    @Test(description = "Verify DELETE request to '/store/order/{orderId}' returns error if purchase order doesn't exist")
+    void verifyDeleteNotExistingPurchaseOrderById() {
+        final Long notExistingOrderId = faker.number().numberBetween(90000L, 99999L);
+        deleteOrderWithId(notExistingOrderId);
+
+        api.petStoreService()
+                .deleteOrderById(notExistingOrderId)
+                .validate()
+                .statusCode(SC_NOT_FOUND);
+    }
+
     private Order createOrderWithId(Long orderId) {
         final Order order = getOrderWithId(orderId);
 
@@ -69,6 +83,13 @@ public class StoreOrderTest extends BaseTest {
         createdOrderResponse.validate().statusCode(SC_OK);
 
         return createdOrderResponse.extract();
+    }
+
+    private void deleteOrderWithId(Long orderId) {
+        api.petStoreService()
+                .deleteOrderById(orderId)
+                .validate()
+                .statusCode(anyOf(is(SC_OK), is(SC_NOT_FOUND)));
     }
 
     private Order getOrderWithId(Long orderId) {
