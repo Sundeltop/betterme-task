@@ -54,6 +54,16 @@ public class StoreOrderTest extends BaseTest {
                 .isEqualTo(existingOrderId);
     }
 
+    @Test(description = "Verify GET request to '/store/order/{orderId}' returns 'NOT FOUND' error if purchase order doesn't exist")
+    void verifyFindNotExistingPurchaseOrderById() {
+        final Long notExistingOrderId = faker.number().numberBetween(90000L, 99999L);
+        deleteOrderWithId(notExistingOrderId);
+
+        final RestAssuredResponse<Order> getOrderResponse = api.petStoreService().getOrderById(notExistingOrderId);
+
+        getOrderResponse.validate().statusCode(SC_NOT_FOUND);
+    }
+
     @Test(description = "Verify DELETE request to '/store/order/{orderId}' deletes purchase order by ID")
     void verifyDeletePurchaseOrderById() {
         final Long existingOrderId = faker.number().numberBetween(90000L, 99999L);
@@ -65,7 +75,7 @@ public class StoreOrderTest extends BaseTest {
                 .statusCode(SC_OK);
     }
 
-    @Test(description = "Verify DELETE request to '/store/order/{orderId}' returns error if purchase order doesn't exist")
+    @Test(description = "Verify DELETE request to '/store/order/{orderId}' returns 'NOT FOUND' error if purchase order doesn't exist")
     void verifyDeleteNotExistingPurchaseOrderById() {
         final Long notExistingOrderId = faker.number().numberBetween(90000L, 99999L);
         deleteOrderWithId(notExistingOrderId);
@@ -76,13 +86,11 @@ public class StoreOrderTest extends BaseTest {
                 .statusCode(SC_NOT_FOUND);
     }
 
-    private Order createOrderWithId(Long orderId) {
+    private void createOrderWithId(Long orderId) {
         final Order order = getOrderWithId(orderId);
 
         final RestAssuredResponse<Order> createdOrderResponse = api.petStoreService().createOrder(order);
         createdOrderResponse.validate().statusCode(SC_OK);
-
-        return createdOrderResponse.extract();
     }
 
     private void deleteOrderWithId(Long orderId) {
