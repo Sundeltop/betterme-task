@@ -35,12 +35,16 @@ public class PetStoreService extends BasePetService {
         );
     }
 
-    @Step("Send GET request to '/store/order/{orderId}' to get order by 'orderId'")
     public RestAssuredResponse<Order> getOrderById(Long orderId) {
+        return getOrderById(Order.class, orderId);
+    }
+
+    @Step("Send GET request to '/store/order/{orderId}' to get order by 'orderId'")
+    public <T> RestAssuredResponse<T> getOrderById(Class<T> entity, Long orderId) {
         log.info("Send GET request to '/store/order/{}' to get order by 'orderId'", orderId);
         return new RestAssuredResponse<>(
                 given().spec(requestSpecification).get("/order/{orderId}", orderId),
-                r -> r.as(Order.class)
+                r -> r.as(entity)
         );
     }
 

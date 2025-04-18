@@ -3,6 +3,7 @@ package org.example.store;
 import io.qameta.allure.Feature;
 import org.example.BaseTest;
 import org.example.api.RestAssuredResponse;
+import org.example.api.dto.Error;
 import org.example.api.dto.Order;
 import org.testng.annotations.Test;
 
@@ -10,6 +11,7 @@ import static java.time.OffsetDateTime.now;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.example.api.dto.Error.orderNotFound;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.is;
 
@@ -59,9 +61,11 @@ public class StoreOrderTest extends BaseTest {
         final Long notExistingOrderId = faker.number().numberBetween(90000L, 99999L);
         deleteOrderWithId(notExistingOrderId);
 
-        final RestAssuredResponse<Order> getOrderResponse = api.petStoreService().getOrderById(notExistingOrderId);
+        final RestAssuredResponse<Error> getOrderResponse = api.petStoreService().getOrderById(Error.class, notExistingOrderId);
 
         getOrderResponse.validate().statusCode(SC_NOT_FOUND);
+
+        assertThat(getOrderResponse.extract()).isEqualTo(orderNotFound());
     }
 
     @Test(description = "Verify DELETE request to '/store/order/{orderId}' deletes purchase order by ID")
