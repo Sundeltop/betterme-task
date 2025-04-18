@@ -1,18 +1,18 @@
-package org.example.store;
+package org.example.api.store;
 
 import io.qameta.allure.Feature;
-import org.example.BaseTest;
+import org.example.api.BaseTest;
 import org.example.api.RestAssuredResponse;
 import org.example.api.dto.Error;
 import org.example.api.dto.Order;
 import org.testng.annotations.Test;
 
-import static java.time.OffsetDateTime.now;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.example.api.dto.Error.orderNotFoundError;
 import static org.example.api.dto.Error.orderNotFoundUnknown;
+import static org.example.api.dto.Order.orderWithId;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.is;
 
@@ -21,13 +21,13 @@ public class StoreOrderTest extends BaseTest {
 
     @Test(description = "Verify POST request to '/store/order' places an order for a pet")
     void verifyPlaceOrderForPet() {
-        final Order order = getOrderWithId(0L);
+        final Order order = orderWithId(0L);
 
-        final RestAssuredResponse<Order> createdOrderResponse = api.petStoreService().createOrder(order);
+        final RestAssuredResponse<Order> createOrderResponse = api.petStoreService().createOrder(order);
 
-        createdOrderResponse.validate().statusCode(SC_OK);
+        createOrderResponse.validate().statusCode(SC_OK);
 
-        final Order createdOrder = createdOrderResponse.extract();
+        final Order createdOrder = createOrderResponse.extract();
         softly.assertThat(createdOrder)
                 .hasNoNullFieldsOrProperties()
                 .usingRecursiveComparison()
@@ -93,10 +93,12 @@ public class StoreOrderTest extends BaseTest {
     }
 
     private void createOrderWithId(Long orderId) {
-        final Order order = getOrderWithId(orderId);
+        final Order order = orderWithId(orderId);
 
-        final RestAssuredResponse<Order> createdOrderResponse = api.petStoreService().createOrder(order);
-        createdOrderResponse.validate().statusCode(SC_OK);
+        api.petStoreService()
+                .createOrder(order)
+                .validate()
+                .statusCode(SC_OK);
     }
 
     private void deleteOrderWithId(Long orderId) {
@@ -104,16 +106,5 @@ public class StoreOrderTest extends BaseTest {
                 .deleteOrderById(orderId)
                 .validate()
                 .statusCode(anyOf(is(SC_OK), is(SC_NOT_FOUND)));
-    }
-
-    private Order getOrderWithId(Long orderId) {
-        return Order.builder()
-                .id(orderId)
-                .petId(0L)
-                .quantity(0)
-                .shipDate(now())
-                .status("placed")
-                .isCompleted(true)
-                .build();
     }
 }

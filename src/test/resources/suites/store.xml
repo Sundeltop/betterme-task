@@ -2,12 +2,12 @@
 <suite name="Store Suite" parallel="tests" thread-count="3">
     <test name="Store Inventory Tests">
         <classes>
-            <class name="org.example.store.StoreInventoryTest"/>
+            <class name="org.example.api.store.StoreInventoryTest"/>
         </classes>
     </test>
     <test name="Store Order Tests">
         <classes>
-            <class name="org.example.store.StoreOrderTest"/>
+            <class name="org.example.api.store.StoreOrderTest"/>
         </classes>
     </test>
 </suite>

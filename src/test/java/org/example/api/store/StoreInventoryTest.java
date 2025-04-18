@@ -1,7 +1,7 @@
-package org.example.store;
+package org.example.api.store;
 
 import io.qameta.allure.Feature;
-import org.example.BaseTest;
+import org.example.api.BaseTest;
 import org.example.api.RestAssuredResponse;
 import org.testng.annotations.Test;
 

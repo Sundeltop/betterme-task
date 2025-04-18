@@ -1,8 +1,7 @@
-package org.example;
+package org.example.api;
 
 import com.github.javafaker.Faker;
 import org.assertj.core.api.SoftAssertions;
-import org.example.api.RestAssuredWrapper;
 
 public abstract class BaseTest {
 
