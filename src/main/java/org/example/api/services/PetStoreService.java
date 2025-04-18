@@ -37,10 +37,19 @@ public class PetStoreService extends BasePetService {
 
     @Step("Send GET request to '/store/order/${orderId}' to get order by 'orderId'")
     public RestAssuredResponse<Order> getOrderById(Long orderId) {
-        log.info("Send GET request to '/store/order/{}' to create order", orderId);
+        log.info("Send GET request to '/store/order/{}' to get order by 'orderId'", orderId);
         return new RestAssuredResponse<>(
                 given().spec(requestSpecification).get("/order/{orderId}", orderId),
                 r -> r.as(Order.class)
+        );
+    }
+
+    @Step("Send DELETE request to '/store/order/${orderId}' to delete order by 'orderId'")
+    public RestAssuredResponse<Void> deleteOrderById(Long orderId) {
+        log.info("Send DELETE request to '/store/order/{}' to delete order by 'orderId'", orderId);
+        return new RestAssuredResponse<>(
+                given().spec(requestSpecification).delete("/order/{orderId}", orderId),
+                null
         );
     }
 

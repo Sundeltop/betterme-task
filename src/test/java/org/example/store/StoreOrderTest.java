@@ -36,15 +36,10 @@ public class StoreOrderTest extends BaseTest {
         softly.assertAll();
     }
 
-    @Test(description = "Verify GET request to '/store/order/{orderId}' finds purchased order by ID")
-    void verifyFindPurchasedOrderById() {
+    @Test(description = "Verify GET request to '/store/order/{orderId}' finds purchase order by ID")
+    void verifyFindPurchaseOrderById() {
         final Long existingOrderId = 1L;
-        final Order order = getOrderWithId(existingOrderId);
-
-        api.petStoreService()
-                .createOrder(order)
-                .validate()
-                .statusCode(SC_OK);
+        createOrderWithId(existingOrderId);
 
         final RestAssuredResponse<Order> getOrderResponse = api.petStoreService().getOrderById(existingOrderId);
 
@@ -54,6 +49,26 @@ public class StoreOrderTest extends BaseTest {
                 .hasNoNullFieldsOrProperties()
                 .extracting(Order::id)
                 .isEqualTo(existingOrderId);
+    }
+
+    @Test(description = "Verify DELETE request to '/store/order/{orderId}' deletes purchase order by ID")
+    void verifyDeletePurchaseOrderById() {
+        final Long existingOrderId = faker.number().numberBetween(90000L, 99999L);
+        createOrderWithId(existingOrderId);
+
+        api.petStoreService()
+                .deleteOrderById(existingOrderId)
+                .validate()
+                .statusCode(SC_OK);
+    }
+
+    private Order createOrderWithId(Long orderId) {
+        final Order order = getOrderWithId(orderId);
+
+        final RestAssuredResponse<Order> createdOrderResponse = api.petStoreService().createOrder(order);
+        createdOrderResponse.validate().statusCode(SC_OK);
+
+        return createdOrderResponse.extract();
     }
 
     private Order getOrderWithId(Long orderId) {

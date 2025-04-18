@@ -23,6 +23,7 @@
         <assertj.version>3.27.3</assertj.version>
         <aspectj.version>1.9.24</aspectj.version>
         <allure.version>2.29.0</allure.version>
+        <faker.version>1.0.2</faker.version>
 
         <!--plugins-->
         <surefire.plugin.version>3.5.3</surefire.plugin.version>
@@ -95,6 +96,11 @@
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-rest-assured</artifactId>
             <version>${allure.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>${faker.version}</version>
         </dependency>
     </dependencies>
 
