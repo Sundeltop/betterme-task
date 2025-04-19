@@ -1,0 +1,1 @@
+{"total":2,"items":[{"uid":"399814b1bc65ad42548072fe9100261c","name":"Store Order","statistic":{"failed":0,"broken":0,"skipped":0,"passed":5,"unknown":0,"total":5}},{"uid":"4472bedcfbd4832b1a5defd0b75eb07c","name":"Store Inventory","statistic":{"failed":0,"broken":0,"skipped":0,"passed":1,"unknown":0,"total":1}}]}
