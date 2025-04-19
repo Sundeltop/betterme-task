@@ -19,7 +19,12 @@ or by passing as variable in Maven:
 
 `-Dbase.uri=YOUR URI`
 
-## How to run
+## How to run on CI
+
+You can open `Run Tests` workflow and run it. Allure Report will be generated automatically in
+`pages-build-deployment` workflow
+
+## How to run locally
 
 You can run this project by running Maven command:
 
